@@ -7,12 +7,18 @@
 
 import UIKit
 
+// MARK: - TabBarController
+
 final class TabBarController: UITabBarController {
+
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabs()
     }
+
+    // MARK: - Private Methods
 
     private func setupTabs() {
         let trackersViewController = TrackersViewController()
