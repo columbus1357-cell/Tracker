@@ -64,7 +64,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private let daysLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .medium)
-        label.textColor = UIColor(named: "YPBlack") ?? .label
+        label.textColor = UIColor(resource: .ypBlack)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -89,6 +89,16 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        emojiLabel.text = nil
+        titleLabel.text = nil
+        daysLabel.text = nil
+        cardView.backgroundColor = nil
+        actionButton.backgroundColor = nil
+        actionButton.setImage(nil, for: .normal)
     }
 
     // MARK: - Configuration

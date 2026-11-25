@@ -47,8 +47,8 @@ final class TrackerTypeSelectionViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Привычка", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(UIColor(named: "YPWhite") ?? .white, for: .normal)
-        button.backgroundColor = UIColor(named: "YPBlack") ?? .label
+        button.setTitleColor(UIColor(resource: .ypWhite), for: .normal)
+        button.backgroundColor = UIColor(resource: .ypBlack)
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(habitButtonTapped), for: .touchUpInside)
         return button
@@ -59,8 +59,8 @@ final class TrackerTypeSelectionViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Нерегулярное событие", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(UIColor(named: "YPWhite") ?? .white, for: .normal)
-        button.backgroundColor = UIColor(named: "YPBlack") ?? .label
+        button.setTitleColor(UIColor(resource: .ypWhite), for: .normal)
+        button.backgroundColor = UIColor(resource: .ypBlack)
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(irregularEventButtonTapped), for: .touchUpInside)
         return button
@@ -71,7 +71,7 @@ final class TrackerTypeSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Создание трекера"
-        view.backgroundColor = UIColor(named: "YPWhite") ?? .systemBackground
+        view.backgroundColor = UIColor(resource: .ypWhite)
         setupViews()
     }
 

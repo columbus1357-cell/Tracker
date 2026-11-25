@@ -28,7 +28,7 @@ final class TrackersViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = UIColor(named: "YPWhite") ?? .systemBackground
+        collectionView.backgroundColor = UIColor(resource: .ypWhite)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(
             TrackerCollectionViewCell.self,
@@ -66,7 +66,7 @@ final class TrackersViewController: UIViewController {
 
     private lazy var emptyStateImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "EmptyTrackersIcon")
+        imageView.image = UIImage(resource: .emptyTrackersIcon)
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -76,7 +76,7 @@ final class TrackersViewController: UIViewController {
         let label = UILabel()
         label.text = "Что будем отслеживать?"
         label.font = .systemFont(ofSize: 12, weight: .medium)
-        label.textColor = UIColor(named: "YPBlack") ?? .label
+        label.textColor = UIColor(resource: .ypBlack)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -86,7 +86,7 @@ final class TrackersViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "YPWhite") ?? .systemBackground
+        view.backgroundColor = UIColor(resource: .ypWhite)
         setupNavigationBar()
         setupCollectionView()
         setupEmptyStateViews()
@@ -142,7 +142,7 @@ final class TrackersViewController: UIViewController {
             target: self,
             action: #selector(addButtonTapped)
         )
-        addButton.tintColor = UIColor(named: "YPBlack") ?? .label
+        addButton.tintColor = UIColor(resource: .ypBlack)
         navigationItem.leftBarButtonItem = addButton
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
     }
@@ -201,7 +201,7 @@ final class TrackersViewController: UIViewController {
         emptyStateLabel.isHidden = !isEmpty
         collectionView.reloadData()
     }
-    
+
     private func isFutureDate(_ date: Date) -> Bool {
         let calendar = Calendar.current
         let startOfSelectedDay = calendar.startOfDay(for: date)

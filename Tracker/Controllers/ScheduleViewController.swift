@@ -29,7 +29,7 @@ final class ScheduleViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = UIColor(named: "YPWhite") ?? .systemBackground
+        tableView.backgroundColor = UIColor(resource: .ypWhite)
         tableView.separatorStyle = .singleLine
         tableView.tableFooterView = UIView()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "WeekdayCell")
@@ -43,8 +43,8 @@ final class ScheduleViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Готово", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(UIColor(named: "YPWhite") ?? .white, for: .normal)
-        button.backgroundColor = UIColor(named: "YPBlack") ?? .label
+        button.setTitleColor(UIColor(resource: .ypWhite), for: .normal)
+        button.backgroundColor = UIColor(resource: .ypBlack)
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         return button
@@ -53,20 +53,21 @@ final class ScheduleViewController: UIViewController {
     // MARK: - Initialization
 
     init(selectedDays: [Weekday]) {
-        self.selectedDays = Set(selectedDays)
-        super.init(nibName: nil, bundle: nil)
-    }
+            self.selectedDays = Set(selectedDays)
+            super.init(nibName: nil, bundle: nil)
+        }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+        @available(*, unavailable)
+        required init?(coder: NSCoder) {
+            nil
+        }
 
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Расписание"
-        view.backgroundColor = UIColor(named: "YPWhite") ?? .systemBackground
+        view.backgroundColor = UIColor(resource: .ypWhite)
         setupViews()
     }
 
@@ -99,9 +100,8 @@ final class ScheduleViewController: UIViewController {
         case .saturday: return "Суббота"
         case .sunday: return "Воскресенье"
         }
-        
     }
-    
+
     private func applyCornerMask(to view: UIView, indexPath: IndexPath, totalRows: Int, radius: CGFloat = 16) {
         view.layer.masksToBounds = true
 
@@ -165,13 +165,14 @@ extension ScheduleViewController: UITableViewDataSource {
 
         cell.textLabel?.text = title(for: day)
         cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        cell.textLabel?.textColor = UIColor(resource: .ypBlack)
         cell.selectionStyle = .none
-        cell.backgroundColor = UIColor(named: "YPBackground") ?? .secondarySystemBackground
+        cell.backgroundColor = UIColor(resource: .ypBackground)
 
         let toggle = UISwitch()
         toggle.tag = indexPath.row
         toggle.isOn = selectedDays.contains(day)
-        toggle.onTintColor = UIColor(named: "YPBlue") ?? .systemBlue
+        toggle.onTintColor = UIColor(resource: .ypBlue)
         toggle.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
         cell.accessoryView = toggle
 
@@ -187,7 +188,6 @@ extension ScheduleViewController: UITableViewDelegate {
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
-        let totalRows = Weekday.allCases.count
-        applyCornerMask(to: cell, indexPath: indexPath, totalRows: totalRows, radius: 16)
+        applyCornerMask(to: cell, indexPath: indexPath, totalRows: weekdays.count, radius: 16)
     }
 }
