@@ -68,17 +68,21 @@ final class NewHabitViewController: BaseTrackerFormViewController {
     // MARK: - Overrides
 
     override func setupAdditionalViews() {
-        view.addSubview(optionsStackView)
+        contentView.addSubview(optionsStackView)
 
         NSLayoutConstraint.activate([
             optionsStackView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 24),
-            optionsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            optionsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            optionsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            optionsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
             categoryButton.heightAnchor.constraint(equalToConstant: 75),
             separatorView.heightAnchor.constraint(equalToConstant: 0.5),
             scheduleButton.heightAnchor.constraint(equalToConstant: 75)
         ])
+    }
+
+    override func topAnchorForEmojiSection() -> NSLayoutYAxisAnchor {
+        optionsStackView.bottomAnchor
     }
 
     override func isFormValid() -> Bool {
@@ -94,8 +98,8 @@ final class NewHabitViewController: BaseTrackerFormViewController {
         let newTracker = Tracker(
             id: UUID(),
             title: rawTitle,
-            color: UIColor(resource: .ypColorSelection5),
-            emoji: "🌱",
+            color: selectedColor ?? UIColor(resource: .ypColorSelection5),
+            emoji: selectedEmoji ?? "🌱",
             schedule: selectedDays
         )
 

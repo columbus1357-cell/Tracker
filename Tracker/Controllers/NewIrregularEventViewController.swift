@@ -26,6 +26,17 @@ final class NewIrregularEventViewController: BaseTrackerFormViewController {
     weak var delegate: NewIrregularEventViewControllerDelegate?
 
     private let defaultCategoryTitle = "Мои события"
+    private let selectedDate: Date
+
+    init(selectedDate: Date = Date()) {
+        self.selectedDate = selectedDate
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        nil
+    }
 
     // MARK: - Lifecycle
 
@@ -38,14 +49,18 @@ final class NewIrregularEventViewController: BaseTrackerFormViewController {
 
     override func setupAdditionalViews() {
         categoryButton.backgroundColor = UIColor(resource: .ypBackground)
-        view.addSubview(categoryButton)
+        contentView.addSubview(categoryButton)
 
         NSLayoutConstraint.activate([
             categoryButton.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 24),
-            categoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            categoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            categoryButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            categoryButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             categoryButton.heightAnchor.constraint(equalToConstant: 75)
         ])
+    }
+
+    override func topAnchorForEmojiSection() -> NSLayoutYAxisAnchor {
+        categoryButton.bottomAnchor
     }
 
     override func didTapCreateButton() {
@@ -56,10 +71,10 @@ final class NewIrregularEventViewController: BaseTrackerFormViewController {
         let newTracker = Tracker(
             id: UUID(),
             title: rawTitle,
-            color: UIColor(resource: .ypColorSelection5),
-            emoji: "⚡️",
+            color: selectedColor ?? UIColor(resource: .ypColorSelection5),
+            emoji: selectedEmoji ?? "⚡️",
             schedule: [],
-            createdDate: Date()
+            createdDate: selectedDate
         )
 
         delegate?.newIrregularEventViewController(self, didCreateTracker: newTracker, categoryTitle: defaultCategoryTitle)
