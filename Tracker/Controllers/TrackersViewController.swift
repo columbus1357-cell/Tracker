@@ -13,6 +13,10 @@ final class TrackersViewController: UIViewController {
     
     // MARK: - Properties
     
+    private let trackerStore = TrackerStore()
+    private let trackerCategoryStore = TrackerCategoryStore()
+    private let trackerRecordStore = TrackerRecordStore()
+    
     private var categories: [TrackerCategory] = []
     private var completedTrackers: [TrackerRecord] = [] {
         didSet {
@@ -90,10 +94,16 @@ final class TrackersViewController: UIViewController {
         setupNavigationBar()
         setupCollectionView()
         setupEmptyStateViews()
+        loadPersistedData()
         reloadVisibleTrackers()
     }
     
     // MARK: - Private Methods
+    
+    private func loadPersistedData() {
+        categories = trackerCategoryStore.fetchCategories()
+        completedTrackers = trackerRecordStore.fetchRecords()
+    }
     
     private func setupCollectionView() {
         view.addSubview(collectionView)
@@ -107,28 +117,12 @@ final class TrackersViewController: UIViewController {
     }
     
     private func addTracker(_ tracker: Tracker, toCategoryTitle categoryTitle: String) {
-        var updatedCategories: [TrackerCategory] = []
-        var isCategoryFound = false
-        
-        for category in categories {
-            if category.title == categoryTitle {
-                let updatedTrackers = category.trackers + [tracker]
-                updatedCategories.append(
-                    TrackerCategory(title: category.title, trackers: updatedTrackers)
-                )
-                isCategoryFound = true
-            } else {
-                updatedCategories.append(category)
-            }
+        do {
+            try trackerStore.add(tracker, toCategoryTitle: categoryTitle)
+            categories = trackerCategoryStore.fetchCategories()
+        } catch {
+            assertionFailure("Failed to save tracker: \(error)")
         }
-        
-        if !isCategoryFound {
-            updatedCategories.append(
-                TrackerCategory(title: categoryTitle, trackers: [tracker])
-            )
-        }
-        
-        categories = updatedCategories
     }
     
     private func setupNavigationBar() {
@@ -311,13 +305,20 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         guard !isFutureDate(currentDate) else { return }
         
         let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
+        let record = TrackerRecord(trackerId: tracker.id, date: currentDate)
         
-        if let existingIndex = completedTrackers.firstIndex(where: {
-            $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: currentDate)
-        }) {
-            completedTrackers.remove(at: existingIndex)
-        } else {
-            completedTrackers.append(TrackerRecord(trackerId: tracker.id, date: currentDate))
+        do {
+            if let existingIndex = completedTrackers.firstIndex(where: {
+                $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: currentDate)
+            }) {
+                try trackerRecordStore.remove(record)
+                completedTrackers.remove(at: existingIndex)
+            } else {
+                try trackerRecordStore.add(record)
+                completedTrackers.append(record)
+            }
+        } catch {
+            assertionFailure("Failed to update tracker record: \(error)")
         }
         
         collectionView.reloadItems(at: [indexPath])
