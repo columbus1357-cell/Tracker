@@ -46,6 +46,7 @@ class BaseTrackerFormViewController: UIViewController {
     
     var selectedEmoji: String?
     var selectedColor: UIColor?
+    var selectedCategory: String?
     
     // MARK: - UI Elements
     
@@ -319,8 +320,15 @@ class BaseTrackerFormViewController: UIViewController {
     }
     
     @objc func categoryButtonTapped() {
-        // Экран «Категория» пока не функционирует
-    }
+            let viewModel = CategoriesViewModel(selectedCategory: selectedCategory)
+            let categoriesVC = CategoriesViewController(viewModel: viewModel)
+            categoriesVC.onCategorySelected = { [weak self] category in
+                guard let self else { return }
+                self.selectedCategory = category
+                self.configureOptionButton(self.categoryButton, title: "Категория", subtitle: category)
+            }
+            present(categoriesVC, animated: true)
+        }
     
     @objc private func cancelButtonTapped() {
         dismiss(animated: true)

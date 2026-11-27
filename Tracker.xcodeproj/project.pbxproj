@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		3106CDEC30B36EB500B2AF0B /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Tracker.app; path = "/Users/ymir/Documents/dev/projects/Tracker/build/Debug-iphoneos/Tracker.app"; sourceTree = "<absolute>"; };
+		3106CDEC30B36EB500B2AF0B /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -44,6 +44,7 @@
 			isa = PBXGroup;
 			children = (
 				3106CDEE30B36EB500B2AF0B /* Tracker */,
+				3106CDEC30B36EB500B2AF0B /* Tracker.app */,
 			);
 			sourceTree = "<group>";
 		};
